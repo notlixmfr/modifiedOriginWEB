@@ -44,6 +44,23 @@
     </head>
 
     <body>
+        <script>
+            if (window.location.hash === '#tablet') {
+                document.documentElement.classList.add('tablet-mode');
+                localStorage.setItem('tabletMode', 'true');
+            } else if (localStorage.getItem('tabletMode') === 'true' && window.location.hash !== '#phone') {
+                document.documentElement.classList.add('tablet-mode');
+            }
+            window.addEventListener('hashchange', () => {
+                if (window.location.hash === '#tablet') {
+                    document.documentElement.classList.add('tablet-mode');
+                    localStorage.setItem('tabletMode', 'true');
+                } else if (window.location.hash === '#phone') {
+                    document.documentElement.classList.remove('tablet-mode');
+                    localStorage.setItem('tabletMode', 'false');
+                }
+            });
+        </script>
         <div class="loadingScreen">
             <link rel="stylesheet" href="/OriginWEB/css/loadingScreen.css" />
             <!--<div class="new__bg">

@@ -41,6 +41,12 @@
     --nav-padding: calc(var(--nav-size) * 2);
     --nav-paddingTouch: 30px;
 }
+
+html.tablet-mode {
+    --bg-widthPhone: 480;
+    --bg-heightPhone: 850;
+    --bg-borderRadiusPhone: 20px;
+}
 * {
     -webkit-tap-highlight-color: transparent;
 }
