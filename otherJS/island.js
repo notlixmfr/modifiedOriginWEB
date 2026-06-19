@@ -22,6 +22,9 @@ const islandSmall = document.querySelector(".island.small");
 const islandMainComputed = getComputedStyle(islandMain);
 const islandSmallComputed = getComputedStyle(islandSmall);
 
+// vertical offset (px) to move the island down when opening (tweak this value)
+const ISLAND_OPEN_TRANSLATE_Y = 20;
+
 islandMain.pointerdown = function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -437,7 +440,19 @@ islandMain.pointerDownForIslandMainOpen = function () {
 let idTimeOutCloseIsland = null;
 function openIsland(typeIsland = "main" || "small") {
     if (typeIsland == "main") {
+        // shift down slightly so expanded island sits below camera hole
+        islandMain.style.willChange = "transform";
+        islandMain.style.transition = "transform 240ms cubic-bezier(.3,1.45,.6,1.01)";
+        requestAnimationFrame(() => {
+            islandMain.style.transform = `translateY(${ISLAND_OPEN_TRANSLATE_Y}px)`;
+        });
+        // add open class (keeps other open styles)
         islandMain.classList.add("open");
+        // clear transition after animation
+        setTimeout(() => {
+            islandMain.style.transition = "";
+            islandMain.style.willChange = "";
+        }, 300);
     } else if (typeIsland == "small") {
         hideIsland("main", true);
         islandMain.timeOutAnimOpen = setTimeout(() => {
@@ -480,6 +495,10 @@ function closeIsland() {
         }
     );
     islandMain.classList.remove("open");
+    // reset any transform applied on open
+    islandMain.style.transform = "";
+    islandMain.style.transition = "";
+    islandMain.style.willChange = "";
     phone.removeEventListener("pointerdown", phone.pointerDownForIslandMainOpen);
 }
 function updateIsland(openAppId_needUpdate, typeContent, content) {
